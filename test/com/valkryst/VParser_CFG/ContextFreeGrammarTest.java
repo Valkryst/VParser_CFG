@@ -55,9 +55,8 @@ public class ContextFreeGrammarTest {
 
     @Test
     public void testToString() {
-        final Parser parser = new Parser();
-        parser.parseTransitions(rules);
-        Assert.assertFalse(parser.toString().isEmpty());
+        final ContextFreeGrammar cfg = new ContextFreeGrammar(rules);
+        Assert.assertFalse(cfg.toString().isEmpty());
     }
 
     @Test
