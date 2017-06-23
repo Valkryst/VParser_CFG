@@ -102,6 +102,27 @@ durv
 
 ---
 
+## CFG Rules
+
+* A CFG requires a minimum of one rule.
+
+* The first rule in a list of input rules must always be a set of initial transitions. When the CFG is run, it will use one of these initial transitions to begin running with.
+
+* The rules following the first rule are transitions. When the CFG runs, it takes an initial transition and applies every possible transition to the initial transition. The result of this operation then has every possible transition applied to it. This process repeats until there are no transitions that can be run against a result.
+
+* This CFG parser is fairly basic, so it's entirely possible to send it into an infinite loop with a poorly written set of rules.
+
+* Rule Format
+  * A rule always begins with a single transition character. This character is followed by one or more substitutions. See the following points for examples.
+    * Valid Rules
+      * A a aB aAB
+      * B b bC
+      * C c
+    * Invalid Rules
+      * AA a aB aAB
+      * B
+---
+
 ## JavaDoc Documentation
 
 Whenever a Travis CI build passes, the JavaDocs are auto-generated and made available at the following link.
