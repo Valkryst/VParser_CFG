@@ -21,8 +21,8 @@ public class Parser {
      *         If there is a semantic error in one of the rules.
      */
     public void parseTransitions(final List<String> rules) throws IllegalArgumentException {
-        if (rules.isEmpty()) {
-            throw new IllegalArgumentException("The list of rules cannot be empty.");
+        if (rules == null || rules.isEmpty()) {
+            throw new IllegalArgumentException("The list of rules cannot be empty or null.");
         }
 
         initialTransitions = rules.get(0).split(" ");
