@@ -71,4 +71,11 @@ public class ParserTest {
         final Parser parser = new Parser();
         parser.parseTransitions(rules);
     }
+
+    @Test
+    public void testToString() {
+        final Parser parser = new Parser();
+        parser.parseTransitions(rules);
+        Assert.assertFalse(parser.toString().isEmpty());
+    }
 }
