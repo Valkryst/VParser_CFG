@@ -1,44 +1,9 @@
 package com.valkryst.VParser_CFG;
 
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class TransitionTest {
-    private final List<String> rules = new ArrayList<>();
-
-    public TransitionTest() {
-        rules.add("B D F G K L M N O T '");
-        rules.add("A a aL aI aR");
-        rules.add("B b bA bI bO");
-        rules.add("C c");
-        rules.add("D d dA dI dO dW dU");
-        rules.add("E e eR eL");
-        rules.add("F f fA fI fL fR fU fO");
-        rules.add("G g gA gI gL gR");
-        rules.add("H h hI hA");
-        rules.add("I i");
-        rules.add("K k kH kI");
-        rules.add("L l lO");
-        rules.add("M m mI");
-        rules.add("N n nA nO");
-        rules.add("O o oI oR");
-        rules.add("P p");
-        rules.add("Q q");
-        rules.add("R r rI rO rV");
-        rules.add("S s");
-        rules.add("T t tE tH");
-        rules.add("U u uR uN");
-        rules.add("V v");
-        rules.add("W w wA");
-        rules.add("X x");
-        rules.add("Y y");
-        rules.add("Z z");
-    }
-
     @Test
     public void testConstructor_withOnlyOneSubstitution() {
         final Transition transition = new Transition("A a");
