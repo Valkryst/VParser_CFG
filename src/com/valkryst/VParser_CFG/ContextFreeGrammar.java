@@ -69,6 +69,10 @@ public class ContextFreeGrammar {
      *        Result of the CFG.
      */
     public String run(String initialTransition) {
+        if (initialTransition == null) {
+            return "";
+        }
+
         boolean replacementOccurred = true;
 
         while (replacementOccurred) {
