@@ -73,6 +73,10 @@ public class Transition {
      *        transition character remain.
      */
     public String performTransition(String string) {
+        if (string == null) {
+            return "";
+        }
+
         while (canApplyTransition(string)) {
             string = string.replaceFirst(transitionCharacter, chooseRandomSubstitution());
         }
@@ -90,6 +94,10 @@ public class Transition {
      *        Whether or not the string contains the transition character.
      */
     public boolean canApplyTransition(final String string) {
+        if (string == null) {
+            return false;
+        }
+
         return string.contains(transitionCharacter);
     }
 
