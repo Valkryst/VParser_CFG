@@ -86,6 +86,19 @@ public static void main(final String[] args) {
     }
 }
 ```
+```
+gloroi
+telor
+froroi
+dwarori
+furoi
+fori
+falori
+nalori
+dari
+lorv
+durv
+```
 
 ---
 
