@@ -39,6 +39,12 @@ public class TransitionTest {
     }
 
     @Test
+    public void testToString() {
+        final Transition transition = new Transition("A b");
+        Assert.assertFalse(transition.toString().isEmpty());
+    }
+
+    @Test
     public void testPerformTransition() {
         final Transition transition = new Transition("A b");
         final String input = "AAA";
