@@ -29,6 +29,27 @@ public class ContextFreeGrammar {
         transitions = parser.getTransitions().toArray(new Transition[totalTransitions]);
     }
 
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("CFG Transitions:");
+        sb.append("\n\tInitial Transitions: \n\t\t");
+
+        for (final String string : initialTransitions) {
+            sb.append(string).append(" ");
+        }
+
+        for (final Transition transition : transitions) {
+            String tmp = transition.toString();
+            tmp = tmp.replace("Transition:", "\tTransition:");
+            tmp = tmp.replace("\n\t", "\n\t\t");
+
+            sb.append("\n\n").append(tmp);
+        }
+
+        return sb.toString();
+    }
+
     /**
      * Runs the CFG with a random initial transition.
      *
