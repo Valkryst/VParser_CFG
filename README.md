@@ -6,7 +6,7 @@ Please refer to the LICENSE file for additional information.
 
 ---
 
-![](https://travis-ci.org/Valkryst/VParser_CFG.svg?branch=master) [![codecov](https://codecov.io/gh/Valkryst/VParser_CFG/branch/master/graph/badge.svg)](https://codecov.io/gh/Valkryst/VParser_CFG) [![Release](https://jitpack.io/v/Valkryst/VParser_CFG.svg)](https://jitpack.io/#Valkryst/VParser_CFG)
+[![MIT License](https://img.shields.io/badge/license-MIT_License-green.svg)](https://github.com/Valkryst/VParser_CFG/blob/master/LICENSE) ![](https://travis-ci.org/Valkryst/VParser_CFG.svg?branch=master) [![codecov](https://codecov.io/gh/Valkryst/VParser_CFG/branch/master/graph/badge.svg)](https://codecov.io/gh/Valkryst/VParser_CFG) [![Release](https://jitpack.io/v/Valkryst/VParser_CFG.svg)](https://jitpack.io/#Valkryst/VParser_CFG)
 
 ## Jar Files & Maven
 
