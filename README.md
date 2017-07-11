@@ -38,7 +38,7 @@ public static void main(final String[] args) {
     // Nori, Oin, Ori, Telchar, Thorin, Thrain
     // Thror,
 
-    rules.add("B D F G K L M N O T '");
+    rules.add("A B C D E F G H I K L M N O P Q R S T U V W X Y Z");
     rules.add("A a aL aI aR");
     rules.add("B b bA bI bO");
     rules.add("C c");
@@ -77,17 +77,16 @@ public static void main(final String[] args) {
 }
 ```
 ```
-gloroi
-telor
-froroi
-dwarori
-furoi
-fori
-falori
-nalori
-dari
 lorv
-durv
+foro
+walor
+unai
+haloi
+gloi
+foroi
+arorv
+froro
+nori
 ```
 
 ---
