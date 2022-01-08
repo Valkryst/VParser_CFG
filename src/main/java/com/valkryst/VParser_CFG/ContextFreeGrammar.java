@@ -1,112 +1,109 @@
 package com.valkryst.VParser_CFG;
 
-import java.util.List;
+import lombok.Getter;
+import lombok.NonNull;
+
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ContextFreeGrammar {
-    /** The initial transitions. */
-    private String[] initialTransitions;
-    /** The transitions. */
-    private Transition[] transitions;
+	@Getter private final Rule[] rules;
 
     /**
-     * Constructs a ContextFreeGrammar.
+     * Constructs a new ContextFreeGrammar.
      *
      * @param rules
-     *        The rules of the CFG.
-     *
-     * @throws IllegalArgumentException
-     *         If there is a semantic error in one of the rules.
+	 * 		One or more rules, where each is expressed as a string of one
+	 * 		terminal followed by zero or more non-terminals.
      */
-    public ContextFreeGrammar(final List<String> rules) throws IllegalArgumentException {
-        final Parser parser = new Parser();
-        parser.parseTransitions(rules);
+    public ContextFreeGrammar(final @NonNull String ... rules) {
+		if (rules.length == 0) {
+			throw new IllegalArgumentException("There must be at least one rule.");
+		}
 
+		this.rules = new Rule[rules.length];
 
-        final int totalTransitions = parser.getTransitions().size();
-
-        initialTransitions = parser.getInitialTransitions();
-        transitions = parser.getTransitions().toArray(new Transition[totalTransitions]);
+		for (int i = 0 ; i < rules.length ; i++) {
+			this.rules[i] = new Rule(rules[i]);
+			this.rules[i].validate();
+		}
     }
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("CFG Transitions:");
-        sb.append("\n\tInitial Transitions: \n\t\t");
+	/**
+	 * Retrieves a random terminal.
+	 *
+	 * @return A random terminal.
+	 */
+	public String randomTerminal() {
+		return rules[
+			ThreadLocalRandom.current().nextInt(0, rules.length)
+		].getTerminal();
+	}
 
-        for (final String string : initialTransitions) {
-            sb.append(string).append(" ");
-        }
+	/**
+	 * Runs the ContextFreeGrammar with a random terminal, and returns a result.
+	 *
+	 * @return A result.
+	 */
+	public String run() {
+		return run(randomTerminal());
+	}
 
-        for (final Transition transition : transitions) {
-            String tmp = transition.toString();
-            tmp = tmp.replace("Transition:", "\tTransition:");
-            tmp = tmp.replace("\n\t", "\n\t\t");
+	/**
+	 * Runs the ContextFreeGrammar and returns a result.
+	 *
+	 * @param terminal A starting terminal.
+	 * @return A result.
+	 */
+	public String run(final @NonNull String terminal) {
+		if (terminal.isEmpty()) {
+			throw new IllegalArgumentException("The terminal cannot be empty.");
+		}
 
-            sb.append("\n\n").append(tmp);
-        }
+		boolean isValidTerminal = false;
 
-        return sb.toString();
-    }
+		for (final Rule rule : rules) {
+			if (rule.getTerminal().equals(terminal)) {
+				isValidTerminal = true;
+				break;
+			}
+		}
 
-    /**
-     * Runs the CFG with a random initial transition.
-     *
-     * @return
-     *        Result of the CFG.
-     */
-    public String run() {
-        return run(ThreadLocalRandom.current().nextInt(initialTransitions.length));
-    }
+		if (!isValidTerminal) {
+			throw new IllegalArgumentException("'" + terminal + "' is not a valid terminal. It does not correspond to any terminal for any rule.");
+		}
 
-    /**
-     * Runs the CFG with an initial transition.
-     *
-     * If the index is out of the initial transitions array
-     * bounds, then it defaults to 0.
-     *
-     * @param index
-     *        Index of the initial transition.
-     *
-     * @return
-     *        Result of the CFG.
-     */
-    public String run(int index) {
-        if (index < 0 || index > initialTransitions.length) {
-            index = 0;
-        }
+		final var sb = new StringBuilder(terminal);
+		int iterations = 0;
 
-        return run(initialTransitions[index]);
-    }
+		while (true) {
+			boolean continueRunning = false;
 
-    /**
-     * Runs the CFG with an initial transition.
-     *
-     * @param initialTransition
-     *        The initial transition.
-     *
-     * @return
-     *        Result of the CFG.
-     */
-    public String run(String initialTransition) {
-        if (initialTransition == null) {
-            return "";
-        }
+			for (final var rule : rules) {
+				final var temp = sb.toString();
 
-        boolean replacementOccurred = true;
+				if (temp.contains(rule.getTerminal())) {
+					sb.setLength(0);
+					sb.append(
+						temp.replaceFirst(
+							rule.getTerminal(),
+							rule.randomNonTerminal()
+						)
+					);
 
-        while (replacementOccurred) {
-            replacementOccurred = false;
+					continueRunning = true;
+					iterations++;
+				}
+			}
 
-            for (final Transition transition : transitions) {
-                if (transition.canApplyTransition(initialTransition)) {
-                    initialTransition = transition.performTransition(initialTransition);
-                    replacementOccurred = true;
-                }
-            }
-        }
+			if (!continueRunning) {
+				break;
+			}
 
-        return initialTransition;
-    }
+			if (iterations >= 10_000) {
+				throw new RuntimeException("The grammar has performed " + iterations + " iterations and is likely stuck in an infinite loop.");
+			}
+		}
+
+		return sb.toString();
+	}
 }

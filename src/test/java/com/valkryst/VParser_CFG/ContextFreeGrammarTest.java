@@ -1,110 +1,135 @@
 package com.valkryst.VParser_CFG;
 
-import ContextFreeGrammar;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.github.javafaker.Faker;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class ContextFreeGrammarTest {
-    private final List<String> rules = new ArrayList<>();
+	private final ContextFreeGrammar grammar;
+	private final Faker faker = new Faker();
 
-    @Before
-    public void initializeRules() {
-        rules.clear();
-        rules.add("B D F G K L M N O T");
-        rules.add("A a aL aI aR");
-        rules.add("B b bA bI bO");
-        rules.add("C c");
-        rules.add("D d dA dI dO dW dU");
-        rules.add("E e eR eL");
-        rules.add("F f fA fI fL fR fU fO");
-        rules.add("G g gA gI gL gR");
-        rules.add("H h hI hA");
-        rules.add("I i");
-        rules.add("K k kH kI");
-        rules.add("L l lO");
-        rules.add("M m mI");
-        rules.add("N n nA nO");
-        rules.add("O o oI oR");
-        rules.add("P p");
-        rules.add("Q q");
-        rules.add("R r rI rO rV");
-        rules.add("S s");
-        rules.add("T t tE tH");
-        rules.add("U u uR uN");
-        rules.add("V v");
-        rules.add("W w wA");
-        rules.add("X x");
-        rules.add("Y y");
-        rules.add("Z z");
-    }
+	public ContextFreeGrammarTest() {
+		final var rules = new String[] {
+			"A a aL aI aR",
+			"B b bA bI bO",
+			"C c",
+			"D d dA dI dO dW dU",
+			"E e eR eL",
+			"F f fA fI fL fR fU fO",
+			"G g gA gI gL gR",
+			"H h hI hA",
+			"I i",
+			"K k kH kI",
+			"L l lO",
+			"M m mI",
+			"N n nA No",
+			"O o oI oR",
+			"P p",
+			"Q q",
+			"R r rI rO rV",
+			"S s",
+			"T t tE tH",
+			"V v",
+			"W w wA",
+			"X x",
+			"Y y",
+			"Z z"
+		};
+		grammar = new ContextFreeGrammar(rules);
+	}
 
-    @Test
-    public void testConstructor_withValidRules() {
-        new ContextFreeGrammar(rules);
-    }
+	@Test
+	public void createContextFreeGrammarWithNullRules() {
+		Assertions.assertThrows(NullPointerException.class, () -> {
+			new ContextFreeGrammar(null);
+		});
+	}
 
-    @Test(expected=IllegalArgumentException.class)
-    public void testConstructor_withOneInvalidRule() {
-        rules.set(1, "A");
+	@Test
+	public void createContextFreeGrammarWithNoRules() {
+		Assertions.assertThrows(IllegalArgumentException.class, ContextFreeGrammar::new);
+	}
 
-        new ContextFreeGrammar(rules);
-    }
+	@Test
+	public void createContextFreeGrammarWithAValidRule() {
+		final var grammar = new ContextFreeGrammar("A b cA");
+		Assertions.assertEquals(1, grammar.getRules().length);
+		Assertions.assertEquals("A", grammar.getRules()[0].getTerminal());
+		Assertions.assertArrayEquals(
+			new String[] { "b", "cA" },
+			grammar.getRules()[0].getNonTerminals()
+		);
+	}
 
-    @Test
-    public void testToString() {
-        final ContextFreeGrammar cfg = new ContextFreeGrammar(rules);
-        Assert.assertFalse(cfg.toString().isEmpty());
-    }
+	@Test
+	public void createContextFreeGrammarWithAnInvalidRule() {
+		Assertions.assertThrows(Exception.class, () -> {
+			new ContextFreeGrammar("");
+		});
+	}
 
-    @Test
-    public void testRun_noArguments() {
-        final ContextFreeGrammar cfg = new ContextFreeGrammar(rules);
-        cfg.run();
-    }
+	@Test
+	public void randomTerminal() {
+		final var randomTerminal = grammar.randomTerminal();
+		Assertions.assertNotNull(randomTerminal);
+		Assertions.assertFalse(randomTerminal.isEmpty());
 
-    @Test
-    public void testRun_intArgument_withValidIndex() {
-        final ContextFreeGrammar cfg = new ContextFreeGrammar(rules);
-        cfg.run(1);
-    }
+		for (final var rule : grammar.getRules()) {
+			if (randomTerminal.equals(rule.getTerminal())) {
+				return;
+			}
+		}
 
-    @Test
-    public void testRun_intArgument_withNegativeIndex() {
-        final ContextFreeGrammar cfg = new ContextFreeGrammar(rules);
-        cfg.run(-1);
-    }
+		Assertions.fail("The randomTerminal is not a terminal for any rule in the grammar.");
+	}
 
-    @Test
-    public void testRun_intArgument_withIndexAboveMaximum() {
-        final ContextFreeGrammar cfg = new ContextFreeGrammar(rules);
-        cfg.run(Integer.MAX_VALUE);
-    }
+	@Test
+	public void testRun() {
+		final var result = grammar.run();
+		Assertions.assertNotNull(result);
+		Assertions.assertFalse(result.isEmpty());
 
-    @Test
-    public void testRun_stringArgument_withValidTransition() {
-        final ContextFreeGrammar cfg = new ContextFreeGrammar(rules);
-        Assert.assertEquals("z", cfg.run("Z"));
-    }
+		for (final var rule : grammar.getRules()) {
+			Assertions.assertFalse(result.contains(rule.getTerminal()));
+		}
+	}
 
-    @Test
-    public void testRun_stringArgument_withInvalidTransition() {
-        final ContextFreeGrammar cfg = new ContextFreeGrammar(rules);
-        Assert.assertEquals("[", cfg.run("["));
-    }
+	@Test
+	public void testRunWithNullTerminal() {
+		Assertions.assertThrows(NullPointerException.class, () -> {
+			grammar.run(null);
+		});
+	}
 
-    @Test
-    public void testRun_stringArgument_withEmptyTransition() {
-        final ContextFreeGrammar cfg = new ContextFreeGrammar(rules);
-        Assert.assertEquals("", cfg.run(""));
-    }
+	@Test
+	public void testRunWithEmptyTerminal() {
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			grammar.run("");
+		});
+	}
 
-    @Test
-    public void testRun_stringArgument_withNullTransition() {
-        final ContextFreeGrammar cfg = new ContextFreeGrammar(rules);
-        Assert.assertEquals("", cfg.run(null));
-    }
+	@Test
+	public void testRunWithInvalidTerminal() {
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			grammar.run("/");
+		});
+	}
+
+	@Test
+	public void testRunWithValidTerminal() {
+		for (int i = 0 ; i < faker.number().randomDigitNotZero() ; i++) {
+			final var result = grammar.run(
+				String.valueOf((char) (Math.random() * 26 + 'A'))
+			);
+			Assertions.assertFalse(result.isEmpty());
+		}
+	}
+
+	@Test
+	public void testRunWithInfiniteLoop() {
+		Assertions.assertThrows(RuntimeException.class, () -> {
+			final var grammar = new ContextFreeGrammar("A A");
+			grammar.run("A");
+		});
+	}
 }
