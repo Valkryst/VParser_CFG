@@ -35,7 +35,7 @@ Add VParser_CFG as a dependency.
 
 ```
 dependencies {
-	implementation 'com.github.Valkryst:VParser_CFG:2022.01.08'
+	implementation 'com.github.Valkryst:VParser_CFG:2022.01.08-2'
 }
 ```
 
@@ -57,7 +57,7 @@ Add VParser_CFG as a dependency.
 <dependency>
     <groupId>com.github.Valkryst</groupId>
     <artifactId>VParser_CFG</artifactId>
-    <version>2022.01.08</version>
+    <version>2022.01.08-2</version>
 </dependency>
 ```
 
@@ -72,7 +72,7 @@ resolvers += "jitpack" at "https://jitpack.io"
 Add VParser_CFG as a dependency.
 
 ```
-libraryDependencies += "com.github.Valkryst" % "VParser_CFG" % "2022.02.08"
+libraryDependencies += "com.github.Valkryst" % "VParser_CFG" % "2022.01.08-2"
 ```
 
 ## Usage
