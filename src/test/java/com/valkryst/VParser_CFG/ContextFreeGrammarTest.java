@@ -30,6 +30,7 @@ public class ContextFreeGrammarTest {
 			"R r rI rO rV",
 			"S s",
 			"T t tE tH",
+			"U u uA uI uO",
 			"V v",
 			"W w wA",
 			"X x",
