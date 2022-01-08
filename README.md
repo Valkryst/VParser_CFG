@@ -1,111 +1,183 @@
-![](https://travis-ci.org/Valkryst/VParser_CFG.svg?branch=master) [![Release](https://jitpack.io/v/Valkryst/VParser_CFG.svg)](https://jitpack.io/#Valkryst/VParser_CFG)
-
-## Jar Files & Maven
-
-To use this project as a Maven dependency, click on the JitPack badge [![Release](https://jitpack.io/v/Valkryst/VParser_CFG.svg)](https://jitpack.io/#Valkryst/VParser_CFG), select a version, click the "Get it!" button, and then follow the instructions.
-
-If you would rather use a Jar file, then you can find the Jars on the [releases](https://github.com/Valkryst/VParser_CFG/releases) page.
+![Java CI with Maven](https://github.com/Valkryst/VParser_CFG/workflows/Java%20CI%20with%20Maven/badge.svg?branch=master)
+[![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/Valkryst/VParser_CFG.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Valkryst/VParser_CFG/context:java)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/Valkryst/VParser_CFG.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Valkryst/VParser_CFG/alerts/)
 
 
----
+## Table of Contents
 
-## How to Use
+* [Installation](https://github.com/Valkryst/VParser_CFG#installation)
+    * [Gradle](https://github.com/Valkryst/VParser_CFG#-gradle)
+    * [Maven](https://github.com/Valkryst/VParser_CFG#-maven)
+    * [sbt](https://github.com/Valkryst/VParser_CFG#-scala-sbt)
+* [Usage](https://github.com/Valkryst/VParser_CFG#usage)
+  * [Notes](https://github.com/Valkryst/VParser_CFG#usage)
+  * [Example](https://github.com/Valkryst/VParser_CFG#usage)
 
-1. Create a set of CFG Rules.
-2. Load your rules into the program.
-3. Create an instance of *ContextFreeGrammar* using your rules.
-4. If no IllegalArgumentError occurs on creation of the *ContextFreeGrammar*, then your rules are semantically correct.
-5. Run the CFG.
+## Installation
+
+VParser_CFG is hosted on the [JitPack package repository](https://jitpack.io/#Valkryst/VParser_CFG)
+which supports Gradle, Maven, and sbt.
+
+### ![Gradle](https://i.imgur.com/qtc6bXq.png?1) Gradle
+
+Add JitPack to your `build.gradle` at the end of repositories.
+
+```
+allprojects {
+	repositories {
+		...
+		maven { url 'https://jitpack.io' }
+	}
+}
+```
+
+Add VParser_CFG as a dependency.
+
+```
+dependencies {
+	implementation 'com.github.Valkryst:VParser_CFG:2022.01.08'
+}
+```
+
+### ![Maven](https://i.imgur.com/2TZzobp.png?1) Maven
+
+Add JitPack as a repository.
+
+``` xml
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+```
+Add VParser_CFG as a dependency.
+
+```xml
+<dependency>
+    <groupId>com.github.Valkryst</groupId>
+    <artifactId>VParser_CFG</artifactId>
+    <version>2022.01.08</version>
+</dependency>
+```
+
+### ![Scala SBT](https://i.imgur.com/Nqv3mVd.png?1) Scala SBT
+
+Add JitPack as a resolver.
+
+```
+resolvers += "jitpack" at "https://jitpack.io"
+```
+
+Add VParser_CFG as a dependency.
+
+```
+libraryDependencies += "com.github.Valkryst" % "VParser_CFG" % "2022.02.08"
+```
+
+## Usage
+
+1. Create a set of rules.
+2. Create a `ContextFreeGrammar` using the rules.
+3. Run the `ContextFreeGrammar`.
+
+### Notes
+
+A `ContextFreeGrammar` requires at least one rule, and each rule must begin with
+a terminal and be followed by zero or more non-terminals. These are examples
+of valid rules:
+
+```
+A aA aB aC a
+B bA bC b
+c
+A thisA isB
+B aA aC
+C validA ruleB c
+```
 
 ### Example
 
 ```java
-public static void main(final String[] args) {
-    final List<String> rules = new ArrayList<>();
-    // Balin, Bifur, Bofur, Bombur, Borin
-    // Dain, Dis, Dori, Dwalin, Farin, Fili
-    // Floi, Frar, Frerin, Fror, Fundin, Gaiml
-    // Gimli, Gloin, Groin, Gror, Ibun, Khim
-    // Kili, Loni, Mim, Nain, Nali, Nar, Narvi
-    // Nori, Oin, Ori, Telchar, Thorin, Thrain
-    // Thror,
+public class Example {
+	public static void main(final String[] args) {
+		/*
+		 * The following set of rules was created using these names:
+		 *
+		 * 		Balin, Bifur, Bofur, Bombur, Borin, Dain, Dis, Dori, Dwalin,
+		 * 		Farin, Fili, Floi, Frar, Frerin, Fror, Fundin, Gaiml, Gimli,
+		 * 		Gloin, Groin, Gror, Ibun, Khim, Kili, Loni, Mim, Nain, Nali,
+		 * 		Nar, Narvi, Nori, Oin, Ori, Telchar, Thorin, Thrain, Thror
+		 */
+		final var rules = new String[]{
+				"A B C D E F G H I K L M N O P Q R S T U V W X Y Z",
+				"A a aL aI aR",
+				"B b bA bI bO",
+				"C c",
+				"D d dA dI dO dW dU",
+				"E e eR eL",
+				"F f fA fI fL fR fU fO",
+				"G g gA gI gL gR",
+				"H h hI hA",
+				"I i",
+				"K k kH kI",
+				"L l lO",
+				"M m mI",
+				"N n nA nO",
+				"O o oI oR",
+				"P p",
+				"Q q",
+				"R r rI rO rV",
+				"S s",
+				"T t tE tH",
+				"U u uR uN",
+				"V v",
+				"W w wA",
+				"X x",
+				"Y y",
+				"Z z"
+		};
 
-    rules.add("A B C D E F G H I K L M N O P Q R S T U V W X Y Z");
-    rules.add("A a aL aI aR");
-    rules.add("B b bA bI bO");
-    rules.add("C c");
-    rules.add("D d dA dI dO dW dU");
-    rules.add("E e eR eL");
-    rules.add("F f fA fI fL fR fU fO");
-    rules.add("G g gA gI gL gR");
-    rules.add("H h hI hA");
-    rules.add("I i");
-    rules.add("K k kH kI");
-    rules.add("L l lO");
-    rules.add("M m mI");
-    rules.add("N n nA nO");
-    rules.add("O o oI oR");
-    rules.add("P p");
-    rules.add("Q q");
-    rules.add("R r rI rO rV");
-    rules.add("S s");
-    rules.add("T t tE tH");
-    rules.add("U u uR uN");
-    rules.add("V v");
-    rules.add("W w wA");
-    rules.add("X x");
-    rules.add("Y y");
-    rules.add("Z z");
+		final var cfg = new ContextFreeGrammar(rules);
 
-    final ContextFreeGrammar cfg = new ContextFreeGrammar(rules);
+		for (int i = 0 ; i < 1000 ; i++) {
+			String res = cfg.run();
 
-    for (int i = 0 ; i < 100 ; i++) {
-        String res = cfg.run();
-
-        if (res.length() > 3) {
-            System.out.println(res);
-        }
-    }
+			// Exclude low-quality results.
+			if (res.length() > 3) {
+				System.out.println(res);
+			}
+		}
+	}
 }
 ```
+
 ```
-lorv
-foro
-walor
-unai
-haloi
-gloi
-foroi
-arorv
-froro
-nori
+guroro
+hfkh
+eroi
+forv
+oror
+bunoroi
+erorv
+gnoi
+thlo
+glorv
+oroi
+lori
+loroi
+hter
+wurv
+funo
+elori
+thhi
+furi
+norv
+ungrv
+unoi
+teri
+dher
+loro
+froi
+...
 ```
-
----
-
-## CFG Rules
-
-* A CFG requires a minimum of one rule.
-
-* The first rule in a list of input rules must always be a set of initial transitions. When the CFG is run, it will use one of these initial transitions to begin running with.
-
-* The rules following the first rule are transitions. When the CFG runs, it takes an initial transition and applies every possible transition to the initial transition. The result of this operation then has every possible transition applied to it. This process repeats until there are no transitions that can be run against a result.
-
-* This CFG parser is fairly basic, so it's entirely possible to send it into an infinite loop with a poorly written set of rules.
-
-* Rule Format
-  * A rule always begins with a single transition character. This character is followed by one or more substitutions. See the following points for examples.
-    * Valid Rules
-      * A a aB aAB
-      * B b bC
-      * C c
-    * Invalid Rules
-      * AA a aB aAB
-      * B
----
-
-## JavaDoc Documentation
-
-Whenever a Travis CI build passes, the JavaDocs are auto-generated and made available at the following link.
-
-https://valkryst.github.io/VParser_CFG/.
