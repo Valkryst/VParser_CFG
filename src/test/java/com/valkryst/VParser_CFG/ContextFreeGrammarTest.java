@@ -19,6 +19,7 @@ public class ContextFreeGrammarTest {
 			"G g gA gI gL gR",
 			"H h hI hA",
 			"I i",
+			"J j jA jI jO",
 			"K k kH kI",
 			"L l lO",
 			"M m mI",
