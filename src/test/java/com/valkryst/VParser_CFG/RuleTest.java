@@ -1,6 +1,6 @@
 package com.valkryst.VParser_CFG;
 
-import com.github.javafaker.Faker;
+import net.datafaker.Faker;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
