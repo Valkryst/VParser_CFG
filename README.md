@@ -1,6 +1,3 @@
-![Java CI with Maven](https://github.com/Valkryst/VParser_CFG/workflows/Java%20CI%20with%20Maven/badge.svg?branch=master)
-
-
 ## Table of Contents
 
 * [Installation](https://github.com/Valkryst/VParser_CFG#installation)
